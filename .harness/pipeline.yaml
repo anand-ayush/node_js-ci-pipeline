@@ -42,7 +42,7 @@ pipeline:
                   name: Build and Push Docker Image
                   spec:
                     connectorRef: docker_connector
-                    repo: aaayushanand/harness-nodejs-app
+                    repo: aaayushanand/nodejs-ci-app
                     tags:
                       - latest
                       - v1.0.${HARNESS_BUILD_NUMBER}
