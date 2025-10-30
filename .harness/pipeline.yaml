@@ -23,6 +23,7 @@ pipeline:
                   cpu: "1"
           execution:
             steps:
+              # Step 1: Install dependencies
               - step:
                   type: Run
                   name: Install Dependencies
@@ -30,13 +31,19 @@ pipeline:
                     shell: sh
                     command: |
                       npm install
+              
+              # Step 2: Run unit tests (no localhost server)
               - step:
                   type: Run
-                  name: Run Tests
+                  name: Run Unit Tests
                   spec:
                     shell: sh
                     command: |
+                      # Ensure tests do not hit localhost
                       npm test
+              
+              
+              # Step 3: Build and push Docker image
               - step:
                   type: BuildAndPushDockerRegistry
                   name: Build and Push Docker Image
