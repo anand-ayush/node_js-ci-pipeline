@@ -53,3 +53,45 @@ pipeline:
                     tags:
                       - latest
                     dockerfile: dockerfile
+  # --------------------------
+    # Stage 3: Deploy to Kubernetes
+    # --------------------------
+    - stage:
+        name: Deploy_to_Kubernetes
+        identifier: Deploy_to_Kubernetes
+        type: Deployment
+        spec:
+          service:
+            name: NodeJS-App
+            identifier: NodeJS_App
+            serviceDefinition:
+              type: Kubernetes
+              spec:
+                manifests:
+                  - manifest:
+                      identifier: NodeJS_Deployment
+                      type: K8sManifest
+                      spec:
+                        store:
+                          type: Git
+                          spec:
+                            connectorRef: git_connector
+                            repoName: https://github.com/anand-ayush/node_js-ci-pipeline
+                            branch: main
+                            paths:
+                              - k8s/deployment.yaml
+          infrastructure:
+            environmentRef: dev
+            infrastructureDefinition:
+              type: KubernetesDirect
+              spec:
+                connectorRef: k8s-connector
+                namespace: default
+          execution:
+            steps:
+              - step:
+                  type: K8sApply
+                  name: Apply Deployment
+                  spec:
+                    filePaths:
+                      - k8s/deployment.yaml
