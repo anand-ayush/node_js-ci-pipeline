@@ -46,4 +46,4 @@ pipeline:
                     tags:
                       - latest
                       - v1.0.${HARNESS_BUILD_NUMBER}
-                    dockerfile: dockerfile
+                    dockerfile: Dockerfile
