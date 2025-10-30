@@ -1,0 +1,49 @@
+pipeline:
+  name: NodeJS-CI-CD-Pipeline
+  identifier: NodeJS_CI_CD_Pipeline
+  projectIdentifier: Default_Project
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Build_and_Push
+        identifier: Build_and_Push
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: Docker
+            spec:
+              connectorRef: docker_connector
+              image: node:18
+              privileged: true
+              resources:
+                limits:
+                  memory: 2Gi
+                  cpu: "1"
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install Dependencies
+                  spec:
+                    shell: sh
+                    command: |
+                      npm install
+              - step:
+                  type: Run
+                  name: Run Tests
+                  spec:
+                    shell: sh
+                    command: |
+                      npm test
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push Docker Image
+                  spec:
+                    connectorRef: docker_connector
+                    repo: aaayushanand/harness-nodejs-app
+                    tags:
+                      - latest
+                      - v1.0.${HARNESS_BUILD_NUMBER}
+                    dockerfile: dockerfile
