@@ -1,7 +1,7 @@
 pipeline:
   name: NodeJS-CI-CD-Pipeline
   identifier: NodeJS_CI_CD_Pipeline
-  projectIdentifier: Default_Project
+  projectIdentifier: CI_CD_Pipeline
   orgIdentifier: default
   tags: {}
   stages:
@@ -52,5 +52,5 @@ pipeline:
                     repo: aaayushanand/nodejs-ci-app
                     tags:
                       - latest
-                      - v1.0.${HARNESS_BUILD_NUMBER}
+                      - v1.0.${HARNESS_BUILD_NUMBER} #safe
                     dockerfile: dockerfile
